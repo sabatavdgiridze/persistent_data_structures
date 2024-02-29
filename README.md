@@ -1,3 +1,3 @@
 # persistent data structures
 
-![image] (./images/image_1.png)
+<p align = "center"><img src = "images/image_1.png"/></p>
