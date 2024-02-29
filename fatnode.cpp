@@ -2,15 +2,18 @@
 
 #include <vector>
 #include <utility>
+#include <algorithm>
 
 class Node {
 public:
   int value;
-
   std::vector<std::pair<int, Node*>> left, right;
   
   Node(int timestamp, int value, Node *left, Node *right) {
     this->value = value;
+
+    (this->left).push_back(std::make_pair(timestamp, nullptr));
+    (this->right).push_back(std::make_pair(timestamp, nullptr));
   }
 
   Node *get_last_left() {
@@ -40,6 +43,9 @@ public:
     this->current_version++;
     this->root = insert(this->root, this->current_version, value);
   }
+  bool find(int timestamp, int value) {
+    return find(this->root, timestamp, value);
+  }
 private:
   Node *insert(Node *node, int timestamp, int value) {
     if (node == nullptr) {
@@ -55,6 +61,23 @@ private:
     }
   }
 
+  bool find(Node *node, int timestamp, int value) {
+    if (node == nullptr) {
+      return false;
+    } else {
+      if (node->value == value) {
+        return true;
+      } else {
+        if (value < node->value) {
+          auto it = std::upper_bound((node->left).begin(), (node->left).end(), std::make_pair(timestamp, nullptr));
+          return find((*std::prev(it)).second, timestamp, value);
+        } else { // value > node->value
+          auto it = std::upper_bound((node->right).begin(), (node->right).end(), std::make_pair(timestamp, nullptr));
+          return find((*std::prev(it)).second, timestamp, value);
+        }
+      }
+    }
+  }
 };
 
 
