@@ -1,1 +1,3 @@
-# persistent_data_structures
+# persistent data structures
+
+![image] (./images/image_1.png)
